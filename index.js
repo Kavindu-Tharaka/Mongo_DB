@@ -22,6 +22,9 @@ const courseSchema = mongoose.Schema({
   author: {
     type: String
   },
+  price: {
+    type: Number
+  },
   tags: [{
       type: String
   }],
@@ -42,6 +45,7 @@ async function createCourse() {
   const course = new Course({
     name: "Mongo DB",
     author: "KTM",
+    author: 12.00,
     tags: ["mongodb", "database"],
     isPublished: true,
   });
@@ -54,4 +58,26 @@ async function createCourse() {
   }
 }
 
-createCourse();
+async function getCourses(){
+
+  // $eq => equal
+  // $ne => not equal
+  // $gt => greater than
+  // $gte => greater than or equal
+  // $lt => lesser than
+  // $lte => lesser than or equal
+  // $in => in
+  // $nin => not in
+
+  const courses = await Course
+                          .find({price: {$gte: 10}})               // greater than or equal 10
+                          .find({price: {$gte: 10, $lt: 20}})      // greater than or equal 10 && lesser than 20
+                          .find({price: {$in: [10, 11, 14]} })     // equal to 10 or 11 or 14
+                          .limit(3)
+                          .sort({name: 1})
+                          .select({name: 1, author: 1});
+
+  console.log(courses);
+}
+
+getCourses();
