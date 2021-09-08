@@ -94,3 +94,22 @@ async function getCourses(){
   console.log(courses);
 }
 
+async function updateDocument(id){
+  const course = await Course.findById(id);
+
+  if(!course) return;
+
+  course.isPublished = true;
+
+  course.set({
+    isPublished: true
+  });
+
+  const result = await course.save();
+  console.log(result);
+}
+
+async function removeDocument(id){
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+}
